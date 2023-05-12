@@ -1,1 +1,11 @@
 name: Main
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    script:
+      - echo "This is PULL REQUEST!"
