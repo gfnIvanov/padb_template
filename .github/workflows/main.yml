@@ -1,11 +1,10 @@
 name: Main
 
-on:
-  pull_request:
-    branches:
-      - '*'
+stages:
+  build
 
-jobs:
-  build:
-    script:
-      - echo "This is PULL REQUEST!"
+build-job:
+  stage: build
+  script:
+    - pip install flake8
+    - echo "Flake8 is installed!"
