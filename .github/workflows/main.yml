@@ -13,4 +13,4 @@ jobs:
         - name: flake8 install
           run: pip install flake8
         - name: flake8 check
-          run: flake8 src/predict_app.py
+          run: flake8 src/*
