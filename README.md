@@ -56,4 +56,20 @@ Project Organization
 
 --------
 
+### Data processing
+
+Usage ```src/data/process_data.py process```
+
+```
+Options:
+  --raw PATH              Path to raw datasets
+  --res PATH              Path to processed datasets
+  --key TEXT              Key field (case sensitive)
+  --type [csv|txt|excel]  Raw files extension
+  --percent INTEGER       Allowed gap percentage in a column
+  --log                   Whether or not to log the key variable
+  --dummy                 Process or not categorical features
+  --help                  Show this message and exit.
+```
+
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>

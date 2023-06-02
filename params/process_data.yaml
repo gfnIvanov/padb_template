@@ -1,0 +1,8 @@
+process:
+  raw: data/raw
+  res: data/processed
+  key: SalePrice
+  type: csv
+  percent: 80
+  log: True
+  dummy: True
