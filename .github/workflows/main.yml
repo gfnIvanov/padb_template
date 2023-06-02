@@ -3,17 +3,17 @@ name: Main
 on: [push]
 
 jobs:
-  autopep-stage:
+  autoflake-stage:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v3
         - uses: actions/setup-python@v4
           with:
             python-version: "3.9"
-        - name: autopep8 install
-          run: pip install autopep8
-        - name: autopep8 fix
-          run: autopep8 --in-place --recursive --aggressive --aggressive src/*
+        - name: autoflake install
+          run: pip install autoflake
+        - name: autoflake fix
+          run: autoflake --in-place src/*
   lint-stage:
       runs-on: ubuntu-latest
       steps:
