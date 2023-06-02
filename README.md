@@ -3,8 +3,6 @@
 
 ### author: gfn.ivanov
 
-A short description of the project.
-
 Project Organization
 ------------
 
