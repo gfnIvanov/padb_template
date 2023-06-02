@@ -13,7 +13,7 @@ jobs:
         - name: autopep8 install
           run: pip install autopep8
         - name: autopep8 fix
-          run: autopep8 src/* --recursive --in-place -a
+          run: autopep8 src/* --recursive --in-place --aggressive --aggressive
   lint-stage:
       runs-on: ubuntu-latest
       steps:
