@@ -1,8 +1,6 @@
 ### padb_template
 ==============================
 
-### author: gfn.ivanov
-
 Project Organization
 ------------
 
