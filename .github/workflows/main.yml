@@ -13,7 +13,7 @@ jobs:
         - name: autoflake install
           run: pip install autoflake
         - name: autoflake fix
-          run: autoflake --in-place src/*
+          run: autoflake --in-place -r src/*
   lint-stage:
       runs-on: ubuntu-latest
       steps:
