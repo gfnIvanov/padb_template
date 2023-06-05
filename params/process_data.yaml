@@ -6,3 +6,5 @@ process:
   percent: 80
   log: True
   dummy: True
+  json: True
+  rename: ['1stFlrSF', '2ndFlrSF', '3SsnPorch']
