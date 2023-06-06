@@ -84,7 +84,7 @@ if __name__ == '__main__':
     log_file = Path.joinpath(root_dir, os.getenv('LOG_FILE'))
 
     log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    log_level = logging.INFO if os.getenv('MODE') else logging.ERROR
+    log_level = logging.INFO if os.getenv('MODE') == 'dev' else logging.ERROR
     logging.basicConfig(level=log_level, filename=log_file, format=log_fmt)
 
     with open(Path.joinpath(root_dir, os.getenv('PARAMS_DIR'), 'process_data.yaml')) as f:

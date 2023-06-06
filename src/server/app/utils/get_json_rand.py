@@ -1,6 +1,7 @@
-import sys
-import csv
+import os
+import yaml
 import json
+import random
 from pathlib import Path
 from typing import Union
 from pydantic import BaseModel
@@ -90,34 +91,19 @@ class CSVData(BaseModel):
     SaleType: StrValue
     SaleCondition: StrValue
 
-class MainData(BaseModel):
-    data: list[CSVData]
+root_dir = Path(__file__).resolve().parents[4]
 
-def csv_to_json(raw_path: str, res_path: str):
-    keys: list = None
-    main = {'data': []}
-    res_file = Path.joinpath(res_path, 'test.json')
-    if Path(res_file).is_file():
-        Path(res_file).unlink()
-    with open(raw_path, newline='') as csvfile:
-        rows = csv.reader(csvfile, delimiter=',', quotechar='|')        
-        for i, row in enumerate(rows):
-            data: dict = None
-            if i == 0:
-                keys = row
-            else:
-                data = dict.fromkeys(keys)
-                for ii, el in enumerate(row):
-                    if el == 'NA':
-                        data[keys[ii]] = None
-                    else:
-                        data[keys[ii]] = int(el) if el.isdigit() else el
-                main['data'].append(data)
-    validateData = MainData.parse_obj(main)
-    with open(res_file, 'w+', encoding='utf-8') as new_JSON:
-        json.dump(validateData.dict(), new_JSON, ensure_ascii=False, indent=4)
+def get_json_rand() -> CSVData:
+    with open(Path.joinpath(root_dir, os.getenv('PARAMS_DIR'), 'process_data.yaml')) as f:
+        params = yaml.safe_load(f)
+    
+    print(params)
+    
+    json_file = Path.joinpath(root_dir, params['process']['res'], 'test.json')
 
-if __name__ == '__main__':
-    print(Path(__file__).resolve().parents[2])
-    sys.path.append('src')
-        
+    with open(json_file) as f:
+        json_data = json.load(f)
+
+    rand = random.randint(0, len(json_data['data']))
+
+    return json_data['data'][rand]
