@@ -8,3 +8,8 @@ process:
   dummy: True
   json: True
   rename: ['1stFlrSF', '2ndFlrSF', '3SsnPorch']
+  eject: [
+    {column: 'GrLivArea', index: 4000}, 
+    {column: 'GarageCars', index: 4},
+    {column: 'GarageArea', index: 1200}
+  ]

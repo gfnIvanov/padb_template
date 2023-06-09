@@ -11,6 +11,7 @@ class Dataset:
     percent: int
     log: bool
     dummy: bool
+    eject: list[dict]
 
     @property
     def df(self) -> pd.DataFrame:
@@ -33,6 +34,9 @@ class Dataset:
         self.all_data = pd.concat([self.train_df, self.test_df], axis=0)
         self.all_data.drop(columns=['Id'], axis=1, inplace=True)
         self.__clearEmpty()
+        if len(self.eject) > 0:
+            for x in self.eject:
+               self.__clearEjection(x['column'], x['index']) 
         if self.dummy:
             self.__getDummies()
 
@@ -56,6 +60,9 @@ class Dataset:
                     self.all_data[col].fillna(value='UNKNOWN', inplace=True)
                 else:
                     self.all_data[col].fillna(value=self.all_data[col].median(), inplace=True)
+
+    def __clearEjection(self, column, index):
+        self.all_data = self.all_data.drop(self.all_data[self.all_data[column] > index].index)
 
     def __getDummies(self):
         click.echo(click.style('Обработка категориальных признаков...', fg='green'))

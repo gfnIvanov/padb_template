@@ -42,7 +42,20 @@ def cli():
 @click.option('--rename', 
               type=list[str],
               help='Array of fields to rename')
-def process(raw: str, res: str, key: str, type: str, percent: int, log: bool, dummy: bool, json: bool, rename: list[str]):
+@click.option('--eject', 
+              type=list[dict],
+              help='Array of fields to clear ejection')
+def process(
+    raw: str, 
+    res: str, 
+    key: str, 
+    type: str, 
+    percent: int, 
+    log: bool, 
+    dummy: bool, 
+    json: bool, 
+    rename: list[str],
+    eject: list[dict]):
     try:
         logger = logging.getLogger(__name__)
         if type == 'csv':
@@ -58,12 +71,13 @@ def process(raw: str, res: str, key: str, type: str, percent: int, log: bool, du
                 new_name = ''.join(list(name)[1:]) + str(list(name)[0])
                 train_df.rename(columns = {name: new_name}, inplace = True)
                 test_df.rename(columns = {name: new_name}, inplace = True)
-        dataset = Dataset(train_df, test_df, key, percent, log, dummy)
+        dataset = Dataset(train_df, test_df, key, percent, log, dummy, eject)
         click.echo(dataset.info())
         dataset.process()    
         all_data = dataset.df
         train_df = all_data.iloc[:train_df.shape[0], :]
         test_df = all_data.iloc[test_df.shape[0]:, :]  
+        test_df.drop(columns=['SalePrice'], axis=1, inplace=True)
         train_df.to_csv(Path.joinpath(root_dir, res, 'train.csv')) 
         test_df.to_csv(Path.joinpath(root_dir, res, 'test.csv'))   
         if json:

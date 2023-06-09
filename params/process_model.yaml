@@ -1,0 +1,7 @@
+process:
+  csv: data/processed
+  res: models
+  tsize: 0.2
+  estim: 340
+  depth: 2
+  rate: 0.2
