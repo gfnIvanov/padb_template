@@ -83,4 +83,11 @@ Options:
   --help           Show this message and exit.
 ```
 
+### Run with Docker
+```
+docker build -t [name] .
+
+docker run -it -p [port]:[port] [image]
+```
+
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
