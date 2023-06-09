@@ -1,6 +1,8 @@
 ### padb_template
 ==============================
 
+A training project for preparing data and a linear regression model, which is needed to organize a server that takes a data set as input and calculates the cost of a house based on the received data using a pre-trained model
+
 Project Organization
 ------------
 
@@ -8,23 +10,14 @@ Project Organization
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
     ├── README.md          <- The top-level README for developers using this project.
     ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
     │   ├── processed      <- The final, canonical data sets for modeling.
     │   └── raw            <- The original, immutable data dump.
     │
     ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
     │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
+    ├── models             <- Trained and serialized models
     │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
-    │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
+    ├── notebooks          <- Jupyter notebooks.
     │
     ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
     │                         generated with `pip freeze > requirements.txt`
@@ -34,7 +27,7 @@ Project Organization
     │   ├── __init__.py    <- Makes src a Python module
     │   │
     │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
+    │   │   └── process_data.py
     │   │
     │   ├── features       <- Scripts to turn raw data into features for modeling
     │   │   └── build_features.py
@@ -42,7 +35,14 @@ Project Organization
     │   ├── models         <- Scripts to train models and then use trained models to make
     │   │   │                 predictions
     │   │   ├── predict_model.py
-    │   │   └── train_model.py
+    │   │   └── process_model.py <- train and save model
+    │   │
+    │   ├── server         <- Flask-server (sends test data and calculates price)
+    │   │   ├── main.py    <- run server
+    │   │   └── app 
+    │   │       ├── routes.py            <- endpoints
+    │   │       └── utils 
+    │   │           └── get_json_rand.py <- get random test data
     │   │
     │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
     │       └── visualize.py
@@ -66,6 +66,21 @@ Options:
   --log                   Whether or not to log the key variable
   --dummy                 Process or not categorical features
   --help                  Show this message and exit.
+```
+
+### Model processing
+
+Usage ```src/models/process_model.py process```
+
+```
+Options:
+  --csv PATH       Path to csv files
+  --res PATH       Path to pre-trained model dir
+  --tsize FLOAT    Test size
+  --estim INTEGER  N_estimators
+  --depth INTEGER  Max depth
+  --rate FLOAT     Learning rate
+  --help           Show this message and exit.
 ```
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
