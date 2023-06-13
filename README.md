@@ -86,6 +86,11 @@ Options:
   --help           Show this message and exit.
 ```
 
+### Pre-commit check all
+```
+pre-commit run --all-files
+```
+
 ### Run with Docker-compose
 ```
 docker-compose build
@@ -93,7 +98,7 @@ docker-compose build
 docker-compose up -d
 ```
 
-# Watch logs
+### Watch logs
 ```
 docker-compose logs -f
 ```
