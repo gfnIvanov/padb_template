@@ -8,6 +8,7 @@ from pydantic import BaseModel
 IntValue = Union[int, None]
 StrValue = Union[str, None]
 
+
 class CSVData(BaseModel):
     Id: int
     MSSubClass: IntValue
@@ -31,7 +32,7 @@ class CSVData(BaseModel):
     YearBuilt: IntValue
     YearRemodAdd: IntValue
     RoofStyle: StrValue
-    RoofMatl:StrValue
+    RoofMatl: StrValue
     Exterior1st: StrValue
     Exterior2nd: StrValue
     MasVnrType: StrValue
@@ -90,8 +91,10 @@ class CSVData(BaseModel):
     SaleType: StrValue
     SaleCondition: StrValue
 
+
 class MainData(BaseModel):
     data: list[CSVData]
+
 
 def csv_to_json(raw_path: str, res_path: str):
     keys: list = None
@@ -100,7 +103,7 @@ def csv_to_json(raw_path: str, res_path: str):
     if Path(res_file).is_file():
         Path(res_file).unlink()
     with open(raw_path, newline='') as csvfile:
-        rows = csv.reader(csvfile, delimiter=',', quotechar='|')        
+        rows = csv.reader(csvfile, delimiter=',', quotechar='|')
         for i, row in enumerate(rows):
             data: dict = None
             if i == 0:
@@ -117,7 +120,7 @@ def csv_to_json(raw_path: str, res_path: str):
     with open(res_file, 'w+', encoding='utf-8') as new_JSON:
         json.dump(validateData.dict(), new_JSON, ensure_ascii=False, indent=4)
 
+
 if __name__ == '__main__':
     print(Path(__file__).resolve().parents[2])
     sys.path.append('src')
-        
