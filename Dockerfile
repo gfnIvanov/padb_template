@@ -1,13 +1,18 @@
 # syntax=docker/dockerfile:1
    
-FROM python:3.9-slim
+# pull official base image
+FROM python:3.11.3-slim-buster
+
+# set work directory
 WORKDIR /app
+
+# copy project
 COPY . .
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# install dependencies
+RUN pip install --upgrade pip
 RUN pip install -r ./requirements.txt
-ENV TRAIN_DATA_PATH data/raw
-ENV RES_DATA_PATH data/processed
-ENV PARAMS_DIR params
-ENV LOG_FILE logs/logs.log
-ENV MODE prod
-EXPOSE 9100
-CMD ["chmod +x start.sh", "./start.sh"]
