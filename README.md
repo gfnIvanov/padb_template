@@ -9,6 +9,9 @@ Project Organization
     ├── LICENSE
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
     ├── README.md          <- The top-level README for developers using this project.
+    ├── pre-commit-config.yaml
+    ├── docker-compose.yml
+    ├── Dockerfile
     ├── data
     │   ├── processed      <- The final, canonical data sets for modeling.
     │   └── raw            <- The original, immutable data dump.
@@ -38,11 +41,11 @@ Project Organization
     │   │   └── process_model.py <- train and save model
     │   │
     │   ├── server         <- Flask-server (sends test data and calculates price)
-    │   │   ├── main.py    <- run server
+    │   │   ├── manage.py
     │   │   └── app 
-    │   │       ├── routes.py            <- endpoints
+    │   │       ├── __init__.py 
     │   │       └── utils 
-    │   │           └── get_json_rand.py <- get random test data
+    │   │           └── __init__.py 
     │   │
     │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
     │       └── visualize.py
@@ -83,11 +86,16 @@ Options:
   --help           Show this message and exit.
 ```
 
-### Run with Docker
+### Run with Docker-compose
 ```
-docker build -t [name] .
+docker-compose build
 
-docker run -it -p [port]:[port] [image]
+docker-compose up -d
+```
+
+# Watch logs
+```
+docker-compose logs -f
 ```
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
