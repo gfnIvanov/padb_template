@@ -9,6 +9,7 @@ from pydantic import BaseModel
 IntValue = Union[int, None]
 StrValue = Union[str, None]
 
+
 class CSVData(BaseModel):
     Id: int
     MSSubClass: IntValue
@@ -32,7 +33,7 @@ class CSVData(BaseModel):
     YearBuilt: IntValue
     YearRemodAdd: IntValue
     RoofStyle: StrValue
-    RoofMatl:StrValue
+    RoofMatl: StrValue
     Exterior1st: StrValue
     Exterior2nd: StrValue
     MasVnrType: StrValue
@@ -91,14 +92,16 @@ class CSVData(BaseModel):
     SaleType: StrValue
     SaleCondition: StrValue
 
+
 root_dir = Path(__file__).resolve().parents[4]
+
 
 def get_json_rand() -> CSVData:
     with open(Path.joinpath(root_dir, os.getenv('PARAMS_DIR'), 'process_data.yaml')) as f:
         params = yaml.safe_load(f)
-    
+
     print(params)
-    
+
     json_file = Path.joinpath(root_dir, params['process']['res'], 'test.json')
 
     with open(json_file) as f:
