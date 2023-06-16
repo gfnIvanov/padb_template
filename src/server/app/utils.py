@@ -8,7 +8,7 @@ import numpy as np
 from pathlib import Path
 from .data_types import CSVData
 
-root_dir = Path(__file__).resolve().parents[4]
+root_dir = Path(__file__).resolve().parents[3]
 
 
 def get_json_rand() -> CSVData:
