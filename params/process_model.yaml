@@ -5,3 +5,4 @@ process:
   estim: 340
   depth: 2
   rate: 0.2
+  s3: True

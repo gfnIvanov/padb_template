@@ -36,13 +36,17 @@ def cli():
 @click.option('--rate',
               type=float,
               help='Learning rate')
+@click.option('--s3',
+              is_flag=True,
+              help='Save model to external storage')
 def process(
         csv: str,
         res: str,
         tsize: float,
         estim: int,
         depth: int,
-        rate: float):
+        rate: float,
+        s3: bool):
     try:
         logger = logging.getLogger(__name__)
         train_df = pd.read_csv(
@@ -64,6 +68,9 @@ def process(
         with open(Path.joinpath(root_dir, res, 'XGBmodel.dat'), 'wb') as f:
             pickle.dump(model, f)
 
+        if s3:
+            upload()
+
         click.echo(
             click.style(
                 f'Обучение модели завершено. Путь: {res}',
@@ -77,7 +84,21 @@ def process(
         logger.error(e)
 
 
+@click.command()
+def upload():
+    from s3 import upload_model
+    upload_model()
+
+
+@click.command()
+def download():
+    from s3 import download_model
+    download_model()
+
+
 cli.add_command(process)
+cli.add_command(upload)
+cli.add_command(download)
 
 if __name__ == '__main__':
     load_dotenv()

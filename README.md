@@ -77,8 +77,17 @@ Options:
   --estim INTEGER  N_estimators
   --depth INTEGER  Max depth
   --rate FLOAT     Learning rate
-  --help           Show this message and exit.
+  --help           Show this message and exit
+  --s3             Save model to external storage
 ```
+
+### For upload model to cloud.yandex.ru
+
+Usage ```src/models/process_model.py upload```
+
+### For download model from cloud.yandex.ru
+
+Usage ```src/models/process_model.py download```
 
 ### Pre-commit check all
 ```
