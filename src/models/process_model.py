@@ -18,6 +18,7 @@ def cli():
 
 
 @click.command()
+@click.pass_context
 @click.option('--csv',
               type=click.Path(exists=True),
               help='Path to csv files')
@@ -40,6 +41,7 @@ def cli():
               is_flag=True,
               help='Save model to external storage')
 def process(
+        ctx,
         csv: str,
         res: str,
         tsize: float,
@@ -69,7 +71,7 @@ def process(
             pickle.dump(model, f)
 
         if s3:
-            upload()
+            ctx.invoke(upload)
 
         click.echo(
             click.style(
