@@ -1,106 +1,20 @@
 import os
 import yaml
 import json
+import pickle
 import random
+import pandas as pd
+import numpy as np
 from pathlib import Path
-from typing import Union
-from pydantic import BaseModel
+from .data_types import CSVData
 
 root_dir = Path(__file__).resolve().parents[4]
 
 
-IntValue = Union[int, None]
-StrValue = Union[str, None]
-
-
-class CSVData(BaseModel):
-    Id: int
-    MSSubClass: IntValue
-    MSZoning: StrValue
-    LotFrontage: IntValue
-    LotArea: IntValue
-    Street: StrValue
-    Alley: StrValue
-    LotShape: StrValue
-    LandContour: StrValue
-    Utilities: StrValue
-    LotConfig: StrValue
-    LandSlope: StrValue
-    Neighborhood: StrValue
-    Condition1: StrValue
-    Condition2: StrValue
-    BldgType: StrValue
-    HouseStyle: StrValue
-    OverallQual: IntValue
-    OverallCond: IntValue
-    YearBuilt: IntValue
-    YearRemodAdd: IntValue
-    RoofStyle: StrValue
-    RoofMatl: StrValue
-    Exterior1st: StrValue
-    Exterior2nd: StrValue
-    MasVnrType: StrValue
-    MasVnrArea: IntValue
-    ExterQual: StrValue
-    ExterCond: StrValue
-    Foundation: StrValue
-    BsmtQual: StrValue
-    BsmtCond: StrValue
-    BsmtExposure: StrValue
-    BsmtFinType1: StrValue
-    BsmtFinSF1: IntValue
-    BsmtFinType2: StrValue
-    BsmtFinSF2: IntValue
-    BsmtUnfSF: IntValue
-    TotalBsmtSF: IntValue
-    Heating: StrValue
-    HeatingQC: StrValue
-    CentralAir: StrValue
-    Electrical: StrValue
-    stFlrSF1: IntValue
-    ndFlrSF2: IntValue
-    LowQualFinSF: IntValue
-    GrLivArea: IntValue
-    BsmtFullBath: IntValue
-    BsmtHalfBath: IntValue
-    FullBath: IntValue
-    HalfBath: IntValue
-    BedroomAbvGr: IntValue
-    KitchenAbvGr: IntValue
-    KitchenQual: StrValue
-    TotRmsAbvGrd: IntValue
-    Functional: StrValue
-    Fireplaces: IntValue
-    FireplaceQu: StrValue
-    GarageType: StrValue
-    GarageYrBlt: IntValue
-    GarageFinish: StrValue
-    GarageCars: IntValue
-    GarageArea: IntValue
-    GarageQual: StrValue
-    GarageCond: StrValue
-    PavedDrive: StrValue
-    WoodDeckSF: IntValue
-    OpenPorchSF: IntValue
-    EnclosedPorch: IntValue
-    SsnPorch3: IntValue
-    ScreenPorch: IntValue
-    PoolArea: IntValue
-    PoolQC: StrValue
-    Fence: StrValue
-    MiscFeature: StrValue
-    MiscVal: IntValue
-    MoSold: IntValue
-    YrSold: IntValue
-    SaleType: StrValue
-    SaleCondition: StrValue
-
-
 def get_json_rand() -> CSVData:
+    global params
     with open(Path.joinpath(root_dir, os.getenv('PARAMS_DIR'), 'process_data.yaml')) as f:
         params = yaml.safe_load(f)
-
-    print(params)
 
     json_file = Path.joinpath(root_dir, params['process']['res'], 'test.json')
 
@@ -110,3 +24,31 @@ def get_json_rand() -> CSVData:
     rand = random.randint(0, len(json_data['data']))
 
     return json_data['data'][rand]
+
+
+def format_reduction(data: CSVData) -> float:
+    results = []
+    json_file = Path.joinpath(root_dir, params['process']['res'], 'test.csv')
+    df = pd.read_csv(json_file, index_col=[0])
+    for col in df.columns:
+        split_res = col.split('_')
+        col_name = split_res[0]
+        col_value = split_res[1] if len(split_res) > 1 else None
+        if col_value is None:
+            median = df[col].median()
+            results.append(median if data[col] is None else data[col])
+        else:
+            cur_value = 'UNKNOWN' if data[col_name] is None else data[col_name]
+            res = 1 if cur_value == col_value else 0
+            results.append(res)
+    df_for_predict = pd.DataFrame([results], columns=df.columns)
+    return df_for_predict
+
+
+def predict_model(data: pd.DataFrame) -> int:
+    with open(Path.joinpath(root_dir, os.getenv('PARAMS_DIR'), 'process_model.yaml')) as f:
+        params = yaml.safe_load(f)
+    with open(Path.joinpath(root_dir, params['process']['res'], 'XGBmodel.dat'), 'rb') as f:
+        model = pickle.load(f)
+
+    return np.expm1(model.predict(data))[0]

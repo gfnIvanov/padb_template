@@ -1,8 +1,13 @@
 from flask import Flask
+from flask_cors import CORS
 from flask import make_response
-from .utils import get_json_rand
+from flask import request
+from .utils import get_json_rand, format_reduction, predict_model
 
 app = Flask(__name__)
+
+
+CORS(app)
 
 
 @app.get('/')
@@ -14,12 +19,11 @@ def index():
 def get_random_data():
     data = get_json_rand()
     response = make_response(data, 200)
-    response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 
 
-@app.get('/get-calc-price')
-def get_calc_price():
-    response = make_response({'price': 250000}, 200)
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    return response
+@app.post('/calc-price')
+def calc_price():
+    processed_data = format_reduction(request.get_json())
+    prediction = str(round(predict_model(processed_data), 2))
+    return make_response(prediction, 200)

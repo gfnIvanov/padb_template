@@ -45,7 +45,12 @@ def process(
         rate: float):
     try:
         logger = logging.getLogger(__name__)
-        train_df = pd.read_csv(Path.joinpath(root_dir, csv, 'train.csv'))
+        train_df = pd.read_csv(
+            Path.joinpath(
+                root_dir,
+                csv,
+                'train.csv'),
+            index_col=[0])
         y = train_df['SalePrice']
         train_df.drop(columns=['SalePrice'], axis=1, inplace=True)
         X = train_df
