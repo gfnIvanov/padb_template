@@ -2,7 +2,7 @@ import sys
 import csv
 import json
 from pathlib import Path
-from ... src import MainData
+from data_types import MainData
 
 
 def csv_to_json(raw_path: str, res_path: str):

@@ -1,0 +1,50 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python src/data/process_data.py process
+    deps:
+    - path: data/raw/test.csv
+      hash: md5
+      md5: dcec4b79bf9c7317bd9e17789bf888f0
+      size: 451405
+    - path: data/raw/train.csv
+      hash: md5
+      md5: 80ccab65fb115cbad143dbbd2bcd5577
+      size: 460676
+    - path: src/data/process_data.py
+      hash: md5
+      md5: e1da64f19db0f0a2021f2b0683406f23
+      size: 4142
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: ee2cd2856b25cfe9261775808f76fb61
+      size: 2322028
+    - path: data/processed/test.json
+      hash: md5
+      md5: 502522d58a8ef021dd3570d47a5b780b
+      size: 3714246
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 61a85401f8de711fe42a0a65fcb36136
+      size: 2394860
+  train:
+    cmd: python src/models/process_model.py process
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: ee2cd2856b25cfe9261775808f76fb61
+      size: 2322028
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 61a85401f8de711fe42a0a65fcb36136
+      size: 2394860
+    - path: src/models/process_model.py
+      hash: md5
+      md5: 90321c244ff107380b20d3ffa7df5bdf
+      size: 3094
+    outs:
+    - path: models/XGBModel.dat
+      hash: md5
+      md5: 44c240e0e8ea4eebe7f611f5cbdf4942
+      size: 317474
