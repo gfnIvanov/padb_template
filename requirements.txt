@@ -13,3 +13,6 @@ python-dotenv>=0.5.1
 pyyaml
 pydantic
 flask
+pandas
+xgboost
+scikit-learn

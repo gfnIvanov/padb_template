@@ -14,6 +14,7 @@ Project Organization
     ├── pre-commit-config.yaml
     ├── docker-compose.yml
     ├── Dockerfile
+    ├── dvc.yaml           <- dvc-pipeline config
     ├── data
     │   ├── processed      <- The final, canonical data sets for modeling.
     │   └── raw            <- The original, immutable data dump.
@@ -48,6 +49,52 @@ Project Organization
 
 
 --------
+
+### DVC-pipeline
+
+```
++-----------------------+         +------------------------+
+| data/raw/test.csv.dvc |         | data/raw/train.csv.dvc |
++-----------------------+         +------------------------+
+                    ***               **
+                       ***         ***
+                          **     **
+                        +---------+
+                        | prepare |
+                        +---------+
+                              *
+                              *
+                              *
+                         +-------+
+                         | train |
+                         +-------+
+```
+
+### Run DVC-pipeline
+
+```
+dvc repro
+```
+
+### Output data depend
+
+```
+                            +-------------------+                           +--------------------+
+                            | data/raw/test.csv |******               ******| data/raw/train.csv |
+                            +-------------------+      ***************      +--------------------+
+                        *****                *************          ************                 *****
+                     ***         ************         ***             ***       *************         ***
+                  ***     *******                        ***       ***                       *******     ***
++--------------------------+                     +--------------------------+                     +-------------------------+
+| data/processed/test.json |                     | data/processed/train.csv |                     | data/processed/test.csv |
++--------------------------+                     +--------------------------+                     +-------------------------+
+                                                                         *****                   *****
+                                                                              ***             ***
+                                                                                 ***       ***
+                                                                            +---------------------+
+                                                                            | models/XGBModel.dat |
+                                                                            +---------------------+
+```
 
 ### Data processing
 
